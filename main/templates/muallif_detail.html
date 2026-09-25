@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ muallif.ism }}</title>
+    <style>
+        body { background-color: #000; color: #ccc; font-family: 'Times New Roman', serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-image: radial-gradient(circle, #222 0%, #000 100%); }
+        .card { background-color: #111; padding: 40px; border: 2px solid #c9a343; border-radius: 5px; width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9); }
+        h2 { color: #fff; font-size: 2em; margin-bottom: 5px; letter-spacing: 2px; text-transform: uppercase; }
+        .subtitle { color: #8b0000; font-size: 1.1em; font-style: italic; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; border-bottom: 1px dotted #444; padding: 12px 0; font-size: 1.1em; text-align: left; }
+        .info-row:last-child { border-bottom: none; }
+        .label { color: #999; }
+        .value { color: #c9a343; font-weight: bold; }
+        .back-btn { display: inline-block; margin-top: 30px; padding: 10px 20px; background-color: #8b0000; color: #fff; text-decoration: none; font-family: 'Georgia', serif; border: 1px solid #5a0000; transition: 0.3s; }
+        .back-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>{{ muallif.ism }}</h2>
+        <div class="subtitle">Muallif Dosyesi</div>
+        <div class="info-row"><span class="label">Jinsi:</span> <span class="value">{{ muallif.get_jins_display }}</span></div>
+        <div class="info-row"><span class="label">Tug'ilgan sanasi:</span> <span class="value">{{ muallif.tugilgan_sana }}</span></div>
+        <div class="info-row"><span class="label">Kitoblar soni:</span> <span class="value">{{ muallif.kitob_soni }}</span></div>
+        <div class="info-row"><span class="label">Hayotmi?:</span> <span class="value">{% if muallif.tirik %} Ha {% else %} Yo'q {% endif %}</span></div>
+        <a href="javascript:history.back()" class="back-btn">&#8592; Ortga qaytish</a>
+    </div>
+</body>
+</html>

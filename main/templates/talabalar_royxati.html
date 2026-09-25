@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Talabalar Ro'yxati</title>
+    <style>
+        body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Georgia', serif; margin: 0; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; }
+        h2 { color: #c9a343; font-family: 'Times New Roman', Times, serif; text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-top: 0; }
+        .sort-container { background-color: #111; padding: 15px; border: 1px solid #c9a343; border-radius: 5px; margin-bottom: 25px; text-align: center; display: flex; gap: 10px; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .sort-label { color: #c9a343; font-weight: bold; font-family: 'Times New Roman', serif; margin-right: 10px; }
+        .sort-btn { padding: 10px 15px; background-color: #222; color: #fff; text-decoration: none; border: 1px solid #444; font-family: 'Georgia', serif; transition: 0.3s; font-size: 0.9em; }
+        .sort-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #222; margin-bottom: 15px; padding: 20px; border-left: 3px solid #8b0000; transition: all 0.3s ease; }
+        li:hover { background-color: #2a2a2a; border-left: 3px solid #c9a343; transform: translateX(5px); }
+        .name { color: #c9a343; font-size: 1.3em; font-weight: bold; }
+        .details { color: #999; font-size: 0.95em; margin-top: 8px; font-style: italic; }
+        .back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #8b0000; color: #fff; text-decoration: none; border: 1px solid #5a0000; transition: 0.3s; font-family: 'Georgia', serif; }
+        .back-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Talabalar Arvixi</h2>
+        <div class="sort-container">
+            <span class="sort-label">Tartiblash:</span>
+            <a href="?tartib=ism" class="sort-btn">Ism bo'yicha</a>
+            <a href="?tartib=kurs" class="sort-btn">Kurs bo'yicha</a>
+            <a href="?" class="sort-btn" style="background-color: #8b0000; border-color: #5a0000;">Tozalash</a>
+        </div>
+        <ul>
+            {% for talaba in talabalar %}
+                <li>
+                    <div class="name">{{ talaba.ism }}</div>
+                    <div class="details">
+                        Guruh: {{ talaba.guruh }} &nbsp;|&nbsp; Kurs: {{ talaba.kurs }} &nbsp;|&nbsp; Kitoblari: {{ talaba.kitob_soni }} ta
+                    </div>
+                </li>
+            {% empty %}
+                <li style="text-align: center; border: none; color: #666;">Talabalar topilmadi.</li>
+            {% endfor %}
+        </ul>
+        <div style="text-align: center;">
+            <a href="/" class="back-btn">&#8592; Bosh sahifaga qaytish</a>
+        </div>
+    </div>
+</body>
+</html>

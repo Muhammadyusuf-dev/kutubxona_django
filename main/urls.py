@@ -1,24 +1,22 @@
 from django.contrib import admin
 from django.urls import path
+
+# main ilovasidan views ni chaqirib olamiz
 from main import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
 
+    # Hamma ro'yxatlar
     path('mualliflar/', views.barcha_mualliflar, name='barcha_mualliflar'),
-    path('muallif/<int:pk>/', views.muallif_detail, name='muallif_detail'),
-    path('muallif/<int:pk>/ochirish/', views.muallif_ochirish, name='muallif_ochirish'),
-
     path('kitoblar/', views.barcha_kitoblar, name='barcha_kitoblar'),
-    path('kitob/<int:pk>/', views.kitob_detail, name='kitob_detail'),
-
     path('recordlar/', views.barcha_recordlar, name='barcha_recordlar'),
+
+    # Detail (Bitta ob'ekt) sahifalari
+    path('muallif/<int:pk>/', views.muallif_detail, name='muallif_detail'),
+    path('kitob/<int:pk>/', views.kitob_detail, name='kitob_detail'),
     path('record/<int:pk>/', views.record_detail, name='record_detail'),
-    path('record/<int:pk>/ochirish/', views.record_ochirish, name='record_ochirish'),
 
-    path('talabalar/', views.barcha_talabalar, name='barcha_talabalar'),
-
+    # Maxsus so'rovlar (Filtrlanganlar)
     path('mualliflar/tirik/', views.tirik_mualliflar, name='tirik_mualliflar'),
     path('kitoblar/top-sahifa/', views.top_sahifali_kitoblar, name='top_sahifali_kitoblar'),
     path('mualliflar/top-kitob/', views.top_kitobli_mualliflar, name='top_kitobli_mualliflar'),
