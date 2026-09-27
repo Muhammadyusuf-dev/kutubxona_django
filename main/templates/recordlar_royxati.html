@@ -5,38 +5,115 @@
     <title>Ijara (Recordlar) Ro'yxati</title>
     <style>
         body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Georgia', serif; margin: 0; padding: 40px 20px; }
-        .container { max-width: 800px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; }
+        .container { max-width: 800px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; position: relative; }
         h2 { color: #c9a343; font-family: 'Times New Roman', Times, serif; text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-top: 0; }
+        .filter-container { background-color: #111; padding: 15px; border: 1px solid #c9a343; border-radius: 5px; margin-bottom: 25px; text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .filter-input { padding: 10px; background-color: #222; border: 1px solid #444; color: #c9a343; font-family: 'Times New Roman', serif; width: 50%; font-size: 1em; box-sizing: border-box; }
+        .filter-input:focus { outline: none; border-color: #8b0000; }
+        .filter-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; background-color: #8b0000; color: #fff; border: 1px solid #5a0000; cursor: pointer; font-family: 'Georgia', serif; text-transform: uppercase; transition: 0.3s; }
+        .filter-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+        .add-btn { background-color: #222; color: #c9a343; border: 1px solid #c9a343; padding: 10px 20px; cursor: pointer; font-family: 'Georgia', serif; text-transform: uppercase; transition: 0.3s; font-weight: bold; }
+        .add-btn:hover { background-color: #c9a343; color: #000; }
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
+        .modal-content { background-color: #111; margin: 10% auto; padding: 30px; border: 2px solid #8b0000; width: 400px; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; }
+        .close-btn { color: #c9a343; float: right; font-size: 28px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #ff4d4d; }
+        .modal h3 { color: #c9a343; margin-top: 0; border-bottom: 1px dotted #444; padding-bottom: 10px; font-family: 'Times New Roman', serif; text-transform: uppercase; text-align: center;}
+        .modal-form label { display: block; margin-top: 15px; color: #999; font-style: italic; }
+        .modal-form input, .modal-form select { width: 100%; padding: 10px; margin-top: 5px; background-color: #222; border: 1px solid #444; color: #c9a343; box-sizing: border-box; }
+        .modal-form input:focus, .modal-form select:focus { outline: none; border-color: #8b0000; }
+        .submit-btn { width: 100%; margin-top: 25px; padding: 12px; background-color: #8b0000; color: #fff; border: 1px solid #5a0000; cursor: pointer; text-transform: uppercase; font-family: 'Georgia', serif; transition: 0.3s; }
+        .submit-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
         ul { list-style-type: none; padding: 0; }
-        li { background-color: #222; margin-bottom: 15px; padding: 20px; border-left: 3px solid #8b0000; transition: all 0.3s ease; }
+        li { background-color: #222; margin-bottom: 15px; padding: 20px; border-left: 3px solid #8b0000; transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
         li:hover { background-color: #2a2a2a; border-left: 3px solid #c9a343; transform: translateX(5px); }
-        a { color: #c9a343; text-decoration: none; font-size: 1.2em; font-weight: bold; }
-        a:hover { color: #fff; text-shadow: 0 0 5px rgba(201, 163, 67, 0.5); }
+        a.title-link { color: #c9a343; text-decoration: none; font-size: 1.2em; font-weight: bold; }
+        a.title-link:hover { color: #fff; text-shadow: 0 0 5px rgba(201, 163, 67, 0.5); }
         .details { color: #999; font-size: 0.95em; margin-top: 8px; font-style: italic; }
+        .delete-btn { color: #ff4d4d; text-decoration: none; font-size: 0.9em; border: 1px solid #ff4d4d; padding: 5px 10px; border-radius: 3px; transition: 0.3s; }
+        .delete-btn:hover { background-color: #ff4d4d; color: #fff; }
         .back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #8b0000; color: #fff; text-decoration: none; border: 1px solid #5a0000; transition: 0.3s; font-family: 'Georgia', serif; }
         .back-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
     </style>
 </head>
 <body>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="yopishModal()">&times;</span>
+            <h3>Yangi Record Qo'shish</h3>
+            <form action="" method="POST" class="modal-form">
+                {% csrf_token %}
+                <label>Talabani tanlang:</label>
+                <select name="talaba_id" required>
+                    <option value="" disabled selected>-- Talabani tanlang --</option>
+                    {% for talaba in talabalar %}
+                        <option value="{{ talaba.id }}">{{ talaba.ism }}</option>
+                    {% endfor %}
+                </select>
+                <label>Kitobni tanlang:</label>
+                <select name="kitob_id" required>
+                    <option value="" disabled selected>-- Kitobni tanlang --</option>
+                    {% for kitob in kitoblar %}
+                        <option value="{{ kitob.id }}">{{ kitob.nom }}</option>
+                    {% endfor %}
+                </select>
+                <label>Adminni tanlang:</label>
+                <select name="admin_id" required>
+                    <option value="" disabled selected>-- Adminni tanlang --</option>
+                    {% for admin in adminlar %}
+                        <option value="{{ admin.id }}">{{ admin.ism }}</option>
+                    {% endfor %}
+                </select>
+                <label>Olingan sana:</label>
+                <input type="date" name="olingan_sana" required>
+                <label>Qaytarish sanasi:</label>
+                <input type="date" name="qaytarish_sanasi" required>
+                <button type="submit" class="submit-btn">Saqlash</button>
+            </form>
+        </div>
+    </div>
+
     <div class="container">
         <h2>Operatsiyalar (Record) Tarixi</h2>
+        <form action="" method="GET" class="filter-container">
+            <input type="text" name="talaba_ismi" class="filter-input" placeholder="Talaba ismini kiriting..." value="{{ request.GET.talaba_ismi }}">
+            <button type="submit" class="filter-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Qidirish
+            </button>
+            <button type="button" class="add-btn" onclick="ochishModal()">+ Yangi</button>
+        </form>
         <ul>
             {% for record in recordlar %}
                 <li>
-                    <a href="/record/{{ record.id }}">
-                        {{ record.talaba.ism }} &mdash; "{{ record.kitob.nom }}"
-                    </a>
-                    <div class="details">
-                        Olingan sana: {{ record.olingan_sana }}
+                    <div>
+                        <a href="/record/{{ record.id }}" class="title-link">
+                            {{ record.talaba.ism }} &mdash; "{{ record.kitob.nom }}"
+                        </a>
+                        <div class="details">
+                            Olingan sana: {{ record.olingan_sana }}
+                        </div>
                     </div>
+                    <a href="/record/{{ record.id }}/ochirish/" class="delete-btn" onclick="return confirm('Siz haqiqatan ham ushbu recordni (ijarani) o\'chirmoqchimisiz?');">O'chirish</a>
                 </li>
             {% empty %}
-                <li style="text-align: center; border: none; color: #666;">Operatsiyalar (Recordlar) mavjud emas.</li>
+                <li style="text-align: center; border: none; color: #666; justify-content: center;">Operatsiyalar (Recordlar) mavjud emas.</li>
             {% endfor %}
         </ul>
         <div style="text-align: center;">
-            <a href="javascript:history.back()" class="back-btn">&#8592; Ortga qaytish</a>
+            <a href="/" class="back-btn">&#8592; Bosh sahifaga qaytish</a>
         </div>
     </div>
+
+    <script>
+        var modal = document.getElementById("addModal");
+        function ochishModal() { modal.style.display = "block"; }
+        function yopishModal() { modal.style.display = "none"; }
+        window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+    </script>
 </body>
 </html>

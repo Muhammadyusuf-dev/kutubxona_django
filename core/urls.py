@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('talabalar/', views.barcha_talabalar, name='barcha_talabalar'),
 
+    path('adminlar/', views.barcha_adminlar, name='barcha_adminlar'),
+
     path('mualliflar/tirik/', views.tirik_mualliflar, name='tirik_mualliflar'),
     path('kitoblar/top-sahifa/', views.top_sahifali_kitoblar, name='top_sahifali_kitoblar'),
     path('mualliflar/top-kitob/', views.top_kitobli_mualliflar, name='top_kitobli_mualliflar'),

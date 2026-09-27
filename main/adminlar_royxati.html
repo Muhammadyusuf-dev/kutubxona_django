@@ -2,16 +2,13 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Talabalar Ro'yxati</title>
+    <title>Adminlar Ro'yxati</title>
     <style>
         body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Georgia', serif; margin: 0; padding: 40px 20px; }
         .container { max-width: 800px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; position: relative; }
         h2 { color: #c9a343; font-family: 'Times New Roman', Times, serif; text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-top: 0; }
-        .sort-container { background-color: #111; padding: 15px; border: 1px solid #c9a343; border-radius: 5px; margin-bottom: 25px; text-align: center; display: flex; gap: 10px; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .sort-label { color: #c9a343; font-weight: bold; font-family: 'Times New Roman', serif; margin-right: 10px; }
-        .sort-btn { padding: 10px 15px; background-color: #222; color: #fff; text-decoration: none; border: 1px solid #444; font-family: 'Georgia', serif; transition: 0.3s; font-size: 0.9em; }
-        .sort-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
-        .add-btn { background-color: #222; color: #c9a343; border: 1px solid #c9a343; padding: 10px 20px; cursor: pointer; font-family: 'Georgia', serif; text-transform: uppercase; transition: 0.3s; font-weight: bold; }
+        .filter-container { background-color: #111; padding: 15px; border: 1px solid #c9a343; border-radius: 5px; margin-bottom: 25px; text-align: center; display: flex; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .add-btn { background-color: #222; color: #c9a343; border: 1px solid #c9a343; padding: 10px 20px; cursor: pointer; font-family: 'Georgia', serif; text-transform: uppercase; transition: 0.3s; font-weight: bold; width: 100%;}
         .add-btn:hover { background-color: #c9a343; color: #000; }
         .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
         .modal-content { background-color: #111; margin: 10% auto; padding: 30px; border: 2px solid #8b0000; width: 400px; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; }
@@ -37,41 +34,39 @@
     <div id="addModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="yopishModal()">&times;</span>
-            <h3>Yangi Talaba Qo'shish</h3>
+            <h3>Yangi Admin Qo'shish</h3>
             <form action="" method="POST" class="modal-form">
                 {% csrf_token %}
-                <label>Talaba ismi:</label>
+                <label>Admin ismi:</label>
                 <input type="text" name="ism" required>
-                <label>Guruh:</label>
-                <input type="text" name="guruh" required>
-                <label>Kurs:</label>
-                <input type="text" name="kurs" required>
-                <label>Kitoblar soni:</label>
-                <input type="number" name="kitob_soni" required>
+                <label>Ish vaqti:</label>
+                <select name="ish_vaqti" required>
+                    <option value="" disabled selected>-- Ish vaqtini tanlang --</option>
+                    <option value="6">6 soat</option>
+                    <option value="8">8 soat</option>
+                    <option value="12">12 soat</option>
+                    <option value="24">24 soat</option>
+                </select>
                 <button type="submit" class="submit-btn">Saqlash</button>
             </form>
         </div>
     </div>
 
     <div class="container">
-        <h2>Talabalar Arvixi</h2>
-        <div class="sort-container">
-            <span class="sort-label">Tartiblash:</span>
-            <a href="?tartib=ism" class="sort-btn">Ism bo'yicha</a>
-            <a href="?tartib=kurs" class="sort-btn">Kurs bo'yicha</a>
-            <a href="?" class="sort-btn" style="background-color: #8b0000; border-color: #5a0000;">Tozalash</a>
-            <button type="button" class="add-btn" onclick="ochishModal()">+ Yangi</button>
+        <h2>Adminlar Arvixi</h2>
+        <div class="filter-container">
+            <button type="button" class="add-btn" onclick="ochishModal()">+ Yangi Admin Qo'shish</button>
         </div>
         <ul>
-            {% for talaba in talabalar %}
+            {% for admin in adminlar %}
                 <li>
-                    <div class="name">{{ talaba.ism }}</div>
+                    <div class="name">{{ admin.ism }}</div>
                     <div class="details">
-                        Guruh: {{ talaba.guruh }} &nbsp;|&nbsp; Kurs: {{ talaba.kurs }} &nbsp;|&nbsp; Kitoblari: {{ talaba.kitob_soni }} ta
+                        Ish vaqti: {{ admin.ish_vaqti }} soat
                     </div>
                 </li>
             {% empty %}
-                <li style="text-align: center; border: none; color: #666;">Talabalar topilmadi.</li>
+                <li style="text-align: center; border: none; color: #666;">Adminlar topilmadi.</li>
             {% endfor %}
         </ul>
         <div style="text-align: center;">

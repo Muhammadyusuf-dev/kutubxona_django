@@ -5,14 +5,34 @@
     <title>Kitoblar Ro'yxati</title>
     <style>
         body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Georgia', serif; margin: 0; padding: 40px 20px; }
-        .container { max-width: 800px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; }
+        .container { max-width: 800px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; position: relative; }
         h2 { color: #c9a343; font-family: 'Times New Roman', Times, serif; text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-top: 0; }
-        .filter-container { background-color: #111; padding: 15px; border: 1px solid #c9a343; border-radius: 5px; margin-bottom: 25px; text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .filter-input { padding: 10px; background-color: #222; border: 1px solid #444; color: #c9a343; font-family: 'Times New Roman', serif; width: 35%; font-size: 1em; box-sizing: border-box; }
+
+        /* Filtr va Qo'shish qismi */
+        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .filter-container { background-color: #111; padding: 15px; border: 1px solid #c9a343; border-radius: 5px; display: flex; gap: 10px; flex-wrap: wrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5); width: 100%; justify-content: center;}
+        .filter-input { padding: 10px; background-color: #222; border: 1px solid #444; color: #c9a343; font-family: 'Times New Roman', serif; width: 30%; font-size: 1em; box-sizing: border-box; }
         .filter-input:focus { outline: none; border-color: #8b0000; }
         .custom-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23c9a343%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 10px top 50%; background-size: 12px auto; padding-right: 30px; }
         .filter-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; background-color: #8b0000; color: #fff; border: 1px solid #5a0000; cursor: pointer; font-family: 'Georgia', serif; text-transform: uppercase; transition: 0.3s; }
         .filter-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+
+        .add-btn { background-color: #222; color: #c9a343; border: 1px solid #c9a343; padding: 10px 20px; cursor: pointer; font-family: 'Georgia', serif; text-transform: uppercase; transition: 0.3s; font-weight: bold; width: 20%;}
+        .add-btn:hover { background-color: #c9a343; color: #000; }
+
+        /* Modal oyna dizayni */
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
+        .modal-content { background-color: #111; margin: 10% auto; padding: 30px; border: 2px solid #8b0000; width: 400px; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; }
+        .close-btn { color: #c9a343; float: right; font-size: 28px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #ff4d4d; }
+        .modal h3 { color: #c9a343; margin-top: 0; border-bottom: 1px dotted #444; padding-bottom: 10px; font-family: 'Times New Roman', serif; text-transform: uppercase; text-align: center;}
+
+        .modal-form label { display: block; margin-top: 15px; color: #999; font-style: italic; }
+        .modal-form input, .modal-form select { width: 100%; padding: 10px; margin-top: 5px; background-color: #222; border: 1px solid #444; color: #c9a343; box-sizing: border-box; }
+        .modal-form input:focus, .modal-form select:focus { outline: none; border-color: #8b0000; }
+        .submit-btn { width: 100%; margin-top: 25px; padding: 12px; background-color: #8b0000; color: #fff; border: 1px solid #5a0000; cursor: pointer; text-transform: uppercase; font-family: 'Georgia', serif; transition: 0.3s; }
+        .submit-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+
         ul { list-style-type: none; padding: 0; }
         li { background-color: #222; margin-bottom: 15px; padding: 20px; border-left: 3px solid #8b0000; transition: all 0.3s ease; }
         li:hover { background-color: #2a2a2a; border-left: 3px solid #c9a343; transform: translateX(5px); }
@@ -24,8 +44,42 @@
     </style>
 </head>
 <body>
+
+    <!-- MODAL OYNA QISMI -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="yopishModal()">&times;</span>
+            <h3>Yangi Kitob Qo'shish</h3>
+
+            <form action="" method="POST" class="modal-form">
+                {% csrf_token %}
+
+                <label>Kitob nomi:</label>
+                <input type="text" name="nom" required placeholder="Masalan: O'tkan kunlar">
+
+                <label>Janri:</label>
+                <input type="text" name="janr" required placeholder="Masalan: badiiy">
+
+                <label>Sahifalar soni:</label>
+                <input type="number" name="sahifa" required placeholder="Masalan: 350">
+
+                <label>Muallifni tanlang:</label>
+                <select name="muallif_id" required>
+                    <option value="" disabled selected>-- Muallifni tanlang --</option>
+                    {% for avtor in barcha_mualliflar %}
+                        <option value="{{ avtor.id }}">{{ avtor.ism }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="submit-btn">Saqlash</button>
+            </form>
+        </div>
+    </div>
+    <!-- MODAL YAKUNI -->
+
     <div class="container">
         <h2>Kutubxona Arvixi</h2>
+
         <form action="/kitoblar/" method="GET" class="filter-container">
             <input type="text" name="qidiruv" class="filter-input" placeholder="Kitob nomini kiriting..." value="{{ request.GET.qidiruv }}">
             <select name="janr" class="filter-input custom-select">
@@ -35,14 +89,12 @@
                 <option value="sarguzasht" {% if request.GET.janr == 'sarguzasht' %}selected{% endif %}>Sarguzasht</option>
                 <option value="darslik" {% if request.GET.janr == 'darslik' %}selected{% endif %}>Darslik</option>
             </select>
-            <button type="submit" class="filter-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                Qidirish
-            </button>
+            <button type="submit" class="filter-btn">Qidirish</button>
+
+            <!-- Modalni ochish uchun tugma -->
+            <button type="button" class="add-btn" onclick="ochishModal()">+ Yangi</button>
         </form>
+
         <ul>
             {% for kitob in kitoblar %}
                 <li>
@@ -60,5 +112,25 @@
             <a href="/" class="back-btn">&#8592; Bosh sahifaga qaytish</a>
         </div>
     </div>
+
+    <!-- JavaScript kodi: Modalni ochib-yopish uchun -->
+    <script>
+        var modal = document.getElementById("addModal");
+
+        function ochishModal() {
+            modal.style.display = "block";
+        }
+
+        function yopishModal() {
+            modal.style.display = "none";
+        }
+
+        // Modal atrofidagi qora fon bosilganda oyna yopilishi uchun
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

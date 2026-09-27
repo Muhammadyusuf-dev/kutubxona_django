@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Muallif, Kitob, Record, Talaba
+from .models import Muallif, Kitob, Record, Talaba, Admin
 
 
 def home(request):
@@ -7,16 +7,28 @@ def home(request):
 
 
 def barcha_kitoblar(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        janr = request.POST.get('janr')
+        sahifa = request.POST.get('sahifa')
+        muallif_id = request.POST.get('muallif_id')
+        if nom and janr and sahifa and muallif_id:
+            tanlangan_muallif = get_object_or_404(Muallif, id=muallif_id)
+            Kitob.objects.create(nom=nom, janr=janr, sahifa=sahifa, muallif=tanlangan_muallif)
+        return redirect('barcha_kitoblar')
+
     kitoblar = Kitob.objects.all()
+    barcha_mualliflar = Muallif.objects.all()
     nom_soz = request.GET.get('qidiruv')
     janr_soz = request.GET.get('janr')
-
     if nom_soz:
         kitoblar = kitoblar.filter(nom__icontains=nom_soz)
     if janr_soz:
         kitoblar = kitoblar.filter(janr__icontains=janr_soz)
-
-    return render(request, 'kitoblar_royxati.html', {'kitoblar': kitoblar})
+    return render(request, 'kitoblar_royxati.html', {
+        'kitoblar': kitoblar,
+        'barcha_mualliflar': barcha_mualliflar
+    })
 
 
 def kitob_detail(request, pk):
@@ -25,12 +37,20 @@ def kitob_detail(request, pk):
 
 
 def barcha_mualliflar(request):
+    if request.method == 'POST':
+        ism = request.POST.get('ism')
+        jins = request.POST.get('jins')
+        tugilgan_sana = request.POST.get('tugilgan_sana')
+        kitob_soni = request.POST.get('kitob_soni')
+        tirik = request.POST.get('tirik') == 'on'
+        if ism and jins and tugilgan_sana and kitob_soni:
+            Muallif.objects.create(ism=ism, jins=jins, tugilgan_sana=tugilgan_sana, kitob_soni=kitob_soni, tirik=tirik)
+        return redirect('barcha_mualliflar')
+
     mualliflar = Muallif.objects.all()
     ism_soz = request.GET.get('qidiruv')
-
     if ism_soz:
         mualliflar = mualliflar.filter(ism__icontains=ism_soz)
-
     return render(request, 'mualliflar_royxati.html', {'mualliflar': mualliflar})
 
 
@@ -46,13 +66,30 @@ def muallif_ochirish(request, pk):
 
 
 def barcha_recordlar(request):
+    if request.method == 'POST':
+        talaba_id = request.POST.get('talaba_id')
+        kitob_id = request.POST.get('kitob_id')
+        admin_id = request.POST.get('admin_id')
+        olingan_sana = request.POST.get('olingan_sana')
+        qaytarish_sanasi = request.POST.get('qaytarish_sanasi')
+        if talaba_id and kitob_id and admin_id and olingan_sana and qaytarish_sanasi:
+            Record.objects.create(
+                talaba_id=talaba_id, kitob_id=kitob_id, admin_id=admin_id,
+                olingan_sana=olingan_sana, qaytarish_sanasi=qaytarish_sanasi
+            )
+        return redirect('barcha_recordlar')
+
     recordlar = Record.objects.all()
     talaba_ismi = request.GET.get('talaba_ismi')
-
     if talaba_ismi:
         recordlar = recordlar.filter(talaba__ism__icontains=talaba_ismi)
 
-    return render(request, 'recordlar_royxati.html', {'recordlar': recordlar})
+    return render(request, 'recordlar_royxati.html', {
+        'recordlar': recordlar,
+        'talabalar': Talaba.objects.all(),
+        'kitoblar': Kitob.objects.all(),
+        'adminlar': Admin.objects.all()
+    })
 
 
 def record_detail(request, pk):
@@ -67,15 +104,34 @@ def record_ochirish(request, pk):
 
 
 def barcha_talabalar(request):
+    if request.method == 'POST':
+        ism = request.POST.get('ism')
+        guruh = request.POST.get('guruh')
+        kurs = request.POST.get('kurs')
+        kitob_soni = request.POST.get('kitob_soni')
+        if ism and guruh and kurs and kitob_soni:
+            Talaba.objects.create(ism=ism, guruh=guruh, kurs=kurs, kitob_soni=kitob_soni)
+        return redirect('barcha_talabalar')
+
     talabalar = Talaba.objects.all()
     tartib = request.GET.get('tartib')
-
     if tartib == 'ism':
         talabalar = talabalar.order_by('ism')
     elif tartib == 'kurs':
         talabalar = talabalar.order_by('kurs')
-
     return render(request, 'talabalar_royxati.html', {'talabalar': talabalar})
+
+
+def barcha_adminlar(request):
+    if request.method == 'POST':
+        ism = request.POST.get('ism')
+        ish_vaqti = request.POST.get('ish_vaqti')
+        if ism and ish_vaqti:
+            Admin.objects.create(ism=ism, ish_vaqti=ish_vaqti)
+        return redirect('barcha_adminlar')
+
+    adminlar = Admin.objects.all()
+    return render(request, 'adminlar_royxati.html', {'adminlar': adminlar})
 
 
 def tirik_mualliflar(request):
