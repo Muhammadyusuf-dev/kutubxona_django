@@ -30,6 +30,9 @@
         a.title-link { color: #c9a343; text-decoration: none; font-size: 1.2em; font-weight: bold; }
         a.title-link:hover { color: #fff; text-shadow: 0 0 5px rgba(201, 163, 67, 0.5); }
         .details { color: #999; font-size: 0.95em; margin-top: 8px; font-style: italic; }
+        .action-btns { display: flex; gap: 10px; }
+        .edit-btn { color: #4da6ff; text-decoration: none; font-size: 0.9em; border: 1px solid #4da6ff; padding: 5px 10px; border-radius: 3px; transition: 0.3s; }
+        .edit-btn:hover { background-color: #4da6ff; color: #fff; }
         .delete-btn { color: #ff4d4d; text-decoration: none; font-size: 0.9em; border: 1px solid #ff4d4d; padding: 5px 10px; border-radius: 3px; transition: 0.3s; }
         .delete-btn:hover { background-color: #ff4d4d; color: #fff; }
         .back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #8b0000; color: #fff; text-decoration: none; border: 1px solid #5a0000; transition: 0.3s; font-family: 'Georgia', serif; }
@@ -37,7 +40,6 @@
     </style>
 </head>
 <body>
-
     <div id="addModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="yopishModal()">&times;</span>
@@ -73,7 +75,6 @@
             </form>
         </div>
     </div>
-
     <div class="container">
         <h2>Operatsiyalar (Record) Tarixi</h2>
         <form action="" method="GET" class="filter-container">
@@ -98,7 +99,10 @@
                             Olingan sana: {{ record.olingan_sana }}
                         </div>
                     </div>
-                    <a href="/record/{{ record.id }}/ochirish/" class="delete-btn" onclick="return confirm('Siz haqiqatan ham ushbu recordni (ijarani) o\'chirmoqchimisiz?');">O'chirish</a>
+                    <div class="action-btns">
+                        <a href="/record/{{ record.id }}/tahrirlash/" class="edit-btn">Tahrirlash</a>
+                        <a href="/record/{{ record.id }}/ochirish/" class="delete-btn" onclick="return confirm('Siz haqiqatan ham ushbu recordni (ijarani) o\'chirmoqchimisiz?');">O'chirish</a>
+                    </div>
                 </li>
             {% empty %}
                 <li style="text-align: center; border: none; color: #666; justify-content: center;">Operatsiyalar (Recordlar) mavjud emas.</li>
@@ -108,7 +112,6 @@
             <a href="/" class="back-btn">&#8592; Bosh sahifaga qaytish</a>
         </div>
     </div>
-
     <script>
         var modal = document.getElementById("addModal");
         function ochishModal() { modal.style.display = "block"; }

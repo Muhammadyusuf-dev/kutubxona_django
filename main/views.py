@@ -65,6 +65,19 @@ def muallif_ochirish(request, pk):
     return redirect('barcha_mualliflar')
 
 
+def muallif_tahrirlash(request, pk):
+    muallif = get_object_or_404(Muallif, id=pk)
+    if request.method == 'POST':
+        muallif.ism = request.POST.get('ism')
+        muallif.jins = request.POST.get('jins')
+        muallif.tugilgan_sana = request.POST.get('tugilgan_sana')
+        muallif.kitob_soni = request.POST.get('kitob_soni')
+        muallif.tirik = request.POST.get('tirik') == 'on'
+        muallif.save()
+        return redirect('barcha_mualliflar')
+    return render(request, 'muallif_tahrirlash.html', {'muallif': muallif})
+
+
 def barcha_recordlar(request):
     if request.method == 'POST':
         talaba_id = request.POST.get('talaba_id')
@@ -103,6 +116,15 @@ def record_ochirish(request, pk):
     return redirect('barcha_recordlar')
 
 
+def record_tahrirlash(request, pk):
+    record = get_object_or_404(Record, id=pk)
+    if request.method == 'POST':
+        record.qaytarish_sanasi = request.POST.get('qaytarish_sanasi')
+        record.save()
+        return redirect('barcha_recordlar')
+    return render(request, 'record_tahrirlash.html', {'record': record})
+
+
 def barcha_talabalar(request):
     if request.method == 'POST':
         ism = request.POST.get('ism')
@@ -132,6 +154,16 @@ def barcha_adminlar(request):
 
     adminlar = Admin.objects.all()
     return render(request, 'adminlar_royxati.html', {'adminlar': adminlar})
+
+
+def admin_tahrirlash(request, pk):
+    admin_obj = get_object_or_404(Admin, id=pk)
+    if request.method == 'POST':
+        admin_obj.ism = request.POST.get('ism')
+        admin_obj.ish_vaqti = request.POST.get('ish_vaqti')
+        admin_obj.save()
+        return redirect('barcha_adminlar')
+    return render(request, 'admin_tahrirlash.html', {'admin': admin_obj})
 
 
 def tirik_mualliflar(request):

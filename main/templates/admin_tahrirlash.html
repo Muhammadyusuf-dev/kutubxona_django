@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Tahrirlash</title>
+    <style>
+        body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Georgia', serif; margin: 0; padding: 40px 20px; }
+        .container { max-width: 500px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; }
+        h2 { color: #c9a343; font-family: 'Times New Roman', Times, serif; text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-top: 0; }
+        label { display: block; margin-top: 15px; color: #999; font-style: italic; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; background-color: #222; border: 1px solid #444; color: #c9a343; box-sizing: border-box; }
+        input:focus, select:focus { outline: none; border-color: #8b0000; }
+        .submit-btn { width: 100%; margin-top: 25px; padding: 12px; background-color: #8b0000; color: #fff; border: 1px solid #5a0000; cursor: pointer; text-transform: uppercase; font-family: 'Georgia', serif; transition: 0.3s; }
+        .submit-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+        .back-btn { display: block; text-align: center; margin-top: 20px; color: #999; text-decoration: none; }
+        .back-btn:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Tahrirlash</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Admin ismi:</label>
+            <input type="text" name="ism" value="{{ admin.ism }}" required>
+            <label>Ish vaqti:</label>
+            <select name="ish_vaqti" required>
+                <option value="6" {% if admin.ish_vaqti == 6 %}selected{% endif %}>6 soat</option>
+                <option value="8" {% if admin.ish_vaqti == 8 %}selected{% endif %}>8 soat</option>
+                <option value="12" {% if admin.ish_vaqti == 12 %}selected{% endif %}>12 soat</option>
+                <option value="24" {% if admin.ish_vaqti == 24 %}selected{% endif %}>24 soat</option>
+            </select>
+            <button type="submit" class="submit-btn">O'zgarishlarni Saqlash</button>
+        </form>
+        <a href="/adminlar/" class="back-btn">&#8592; Bekor qilish</a>
+    </div>
+</body>
+</html>

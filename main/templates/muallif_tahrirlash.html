@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Muallif Tahrirlash</title>
+    <style>
+        body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Georgia', serif; margin: 0; padding: 40px 20px; }
+        .container { max-width: 500px; margin: 0 auto; background-color: #1a1a1a; padding: 30px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); border-top: 4px solid #8b0000; }
+        h2 { color: #c9a343; font-family: 'Times New Roman', Times, serif; text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-top: 0; }
+        label { display: block; margin-top: 15px; color: #999; font-style: italic; }
+        input[type="text"], input[type="date"], input[type="number"], select { width: 100%; padding: 10px; margin-top: 5px; background-color: #222; border: 1px solid #444; color: #c9a343; box-sizing: border-box; }
+        input:focus, select:focus { outline: none; border-color: #8b0000; }
+        .submit-btn { width: 100%; margin-top: 25px; padding: 12px; background-color: #8b0000; color: #fff; border: 1px solid #5a0000; cursor: pointer; text-transform: uppercase; font-family: 'Georgia', serif; transition: 0.3s; }
+        .submit-btn:hover { background-color: #c9a343; color: #000; border-color: #c9a343; }
+        .back-btn { display: block; text-align: center; margin-top: 20px; color: #999; text-decoration: none; }
+        .back-btn:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Muallif Tahrirlash</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Muallif ismi:</label>
+            <input type="text" name="ism" value="{{ muallif.ism }}" required>
+            <label>Jinsi:</label>
+            <select name="jins" required>
+                <option value="male" {% if muallif.jins == 'male' %}selected{% endif %}>Erkak</option>
+                <option value="female" {% if muallif.jins == 'female' %}selected{% endif %}>Ayol</option>
+            </select>
+            <label>Tug'ilgan sanasi:</label>
+            <input type="date" name="tugilgan_sana" value="{{ muallif.tugilgan_sana|date:'Y-m-d' }}" required>
+            <label>Kitoblar soni:</label>
+            <input type="number" name="kitob_soni" value="{{ muallif.kitob_soni }}" required>
+            <label style="display: flex; align-items: center;">
+                Hayotmi?: <input type="checkbox" name="tirik" style="margin-left:10px;" {% if muallif.tirik %}checked{% endif %}>
+            </label>
+            <button type="submit" class="submit-btn">O'zgarishlarni Saqlash</button>
+        </form>
+        <a href="/mualliflar/" class="back-btn">&#8592; Bekor qilish</a>
+    </div>
+</body>
+</html>
